@@ -1,0 +1,3 @@
+SELECT DISTINCT Title
+FROM employees
+ORDER BY Title ASC;

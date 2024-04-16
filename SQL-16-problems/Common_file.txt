@@ -1,0 +1,96 @@
+1) -------------------------------------------
+
+   SELECT LastName ||', '|| FirstName
+   FROM customers 
+   WHERE City = 'Prague';
+
+2) -------------------------------------------
+
+a) SELECT LastName ||','|| FirstName
+   FROM customers
+   WHERE FirstName LIKE 'M%';
+   
+б) SELECT LastName ||','|| FirstName
+   FROM customers
+   WHERE FirstName LIKE '%ch%';
+
+3) -------------------------------------------
+
+   SELECT Name, Bytes/1024/1024 as Size_in_MB 
+   FROM tracks
+
+4) -------------------------------------------
+
+   SELECT LastName ||','|| FirstName
+   FROM employees
+   WHERE city='Calgary' AND HireDate >= date('2002-01-01') AND HireDate < date('2003-01-01');
+
+5) -------------------------------------------
+
+   SELECT LastName ||','|| FirstName
+   FROM employees 
+   WHERE HireDate - BirthDate >= 40;
+
+6) -------------------------------------------
+   
+   SELECT CustomerID
+   FROM customers
+   WHERE country='USA' AND Fax IS NULL;
+7) -------------------------------------------
+
+   SELECT ShipCity
+   FROM sales
+   WHERE strftime('%m', SalesDate) IN ('08', '09') AND ShipCountry = 'Canada'
+
+8) -------------------------------------------
+
+   SELECT *
+   FROM customers
+   WHERE Email LIKE "%@gmail.com"
+
+9) -------------------------------------------
+
+   SELECT *
+   FROM employees
+   WHERE date('2024-04-16') - HireDate >= 18;
+   
+10) ------------------------------------------
+
+   SELECT DISTINCT Title
+   FROM employees
+   ORDER BY Title ASC;
+
+11) ------------------------------------------
+
+   SELECT FirstName, LastName, 2024 - Age AS Birthday 
+   FROM customers
+   ORDER BY LastName, FirstName, Birthday ASC;
+
+12) ------------------------------------------
+
+   SELECT  MIN(Milliseconds) / 1000 as TheShortestTrackTime
+   FROM tracks;
+
+13) ------------------------------------------
+
+   SELECT Name, MIN(Milliseconds) / 1000 AS Seconds
+   FROM tracks;
+
+14) ------------------------------------------
+
+   SELECT Country, AVG(Age) AS AverageAge
+   FROM customers
+   GROUP BY Country;
+
+15) -------------------------------------------
+
+   SELECT LastName
+   FROM employees
+   WHERE strftime('%m', HireDate) in ('10');
+
+16) -------------------------------------------
+
+   SELECT LastName
+   FROM employees
+   WHERE HireDate = (SELECT MIN(HireDate) FROM employees);
+   
