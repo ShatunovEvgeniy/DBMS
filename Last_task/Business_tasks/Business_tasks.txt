@@ -1,0 +1,62 @@
+a) --------------------------------------------
+
+SELECT ROUND(AVG(sub.count), 0) FROM
+    (SELECT COUNT(DISTINCT time) as count
+    FROM LOG
+    GROUP BY user_id) as sub;
+
+b) ---------------------------------------------
+
+SELECT AVG(sub.avg_win_percentage) FROM (
+	SELECT
+	    user_id, AVG(100.0 * (win - bet) / bet) AS avg_win_percentage
+	FrOM LOG
+	GROUP BY user_id) AS sub;
+
+c) ------------------------------------------------
+
+SELECT
+    user_id,
+    SUM(win - bet) AS balance
+FROM LOG
+GROUP BY user_id;
+
+d) ------------------------------------------------
+
+SELECT
+    USERS.geo AS city,
+    SUM(LOG.win - LOG.bet) AS total_profit,
+    SUM(LOG.bet) AS total_bet,
+    ROUND(SUM(LOG.win - LOG.bet) / SUM(LOG.bet), 2) AS profitability_ratio
+FROM LOG JOIN USERS ON LOG.user_id = USERS.user_id
+GROUP BY USERS.geo
+ORDER BY profitability_ratio DESC;
+
+e) -------------------------------------------------
+
+SELECT
+    USERS.geo AS city,
+    ROUND(AVG(LOG.bet), 2) AS avg_bet
+FROM LOG JOIN USERS ON LOG.user_id = USERS.user_id
+GROUP BY USERS.geo
+ORDER BY avg_bet DESC;
+
+f) --------------------------------------------------
+
+SELECT ROUND(AVG(average_personally.value), 2) AS Average FROM(
+	WITH first_times AS (
+		SELECT user_id, MIN(time) AS first_time
+	    FROM LOG
+	    GROUP BY user_id
+	),
+	bet_times AS (
+	    SELECT user_id, MIN(time) AS bet_time
+		FROM LOG	
+		WHERE bet != ""
+		GROUP BY user_id
+	)
+	SELECT AVG(julianday(bet_time) - julianday(first_time)) AS value
+	FROM bet_times
+	JOIN first_times ON bet_times.user_id = first_times.user_id
+	GROUP BY first_times.user_id) AS average_personally;
+
